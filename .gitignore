@@ -1,4 +1,5 @@
 obj/
 bin/
-packages/
+.idea/
 .vs/
+packages/
