@@ -37,9 +37,8 @@ namespace TwitchChatSpeech
 
         public static void urlfinder(string chat)
         {
-            String sourcestring = chat;
             Regex re = new Regex(@"(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?", RegexOptions.IgnoreCase | RegexOptions.Multiline);
-            Match m = re.Match(sourcestring);
+            Match m = re.Match(chat);
             for (int gIdx = 0; gIdx < m.Groups.Count; gIdx++)
             {
                 Console.WriteLine("[{0}] = {1}", re.GetGroupNames()[gIdx], m.Groups[gIdx].Value);
@@ -52,8 +51,20 @@ namespace TwitchChatSpeech
             string country = "en";
             LanguageDetector detector = new LanguageDetector();
 
-            detector.AddAllLanguages();
-            if(country == detector.Detect(chat))
+            //splitEnglishAndJapanese
+            //string JapanesePattern = @"(\J+)";
+            //string EnglishPattern = @"([a-zA-Z]+)";
+
+            List<string> matchEnglish = new List<string>();
+            List<string> matchJapanese = new List<string>();
+
+            matchEnglish = matchingEnglishWords(chat);
+            matchJapanese = matchingJapaneseWords(chat);
+
+            //detector.AddAllLanguages();
+            detector.AddLanguages("ja", "en");
+            Console.WriteLine(detector.Detect(chat));
+            if (country == detector.Detect(chat))
             {
                 isEnglish = true;
             } 
@@ -63,6 +74,58 @@ namespace TwitchChatSpeech
             }
 
             return isEnglish;
+        }
+
+        private static List<string> matchingEnglishWords(string text)
+        {
+            List<string> matches = new List<string>();
+            string pattern = @"^([A-Za-z]+)[\s\J].*";
+
+            RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Multiline;
+
+            Match match = Regex.Match(text, pattern, options);
+            // To advance
+            while(match.Success)
+            {
+                matches.Add(match.Value);
+                
+                text = text.Substring(match.Length - 1);
+                match = Regex.Match(text, pattern, options);
+            }
+
+            return matches;
+        }
+
+        // I need to test RegexPatterns 
+        public static void foo(string text)
+        {
+            List<string> matches = new List<string>(); 
+            string pattern = @"^([A-Za-z]+)[\s\p{IsHiragana}].*";
+
+            RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Multiline;
+
+            Match match = Regex.Match(text, pattern, options);
+            Console.WriteLine(match.Value);
+        }
+
+        private static List<string> matchingJapaneseWords(string text)
+        {
+            List<string> matches = new List<string>();
+            string pattern = @"^(\J+).*";
+
+            RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Multiline;
+
+            Match match = Regex.Match(text, pattern, options);
+            // To advance
+            while (match.Success)
+            {
+                matches.Add(match.Value);
+
+                text = text.Substring(match.Length - 1);
+                match = Regex.Match(text, pattern, options);
+            }
+
+            return matches;
         }
 
         public static void CheckInstalledVoices()

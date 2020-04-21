@@ -71,7 +71,8 @@ namespace TwitchChatSpeech
         {
             string chat = ChatTool.Replace(e.ChatMessage.Message);
             //ChatTool.urlfinder(e.ChatMessage.Message);
-            Console.WriteLine(ChatTool.detectLanguage(chat).ToString());
+            //ChatTool.detectLanguage(chat);
+            ChatTool.foo(chat);
 
             // Initialize a new instance of the SpeechSynthesizer.
             using (SpeechSynthesizer synth = new SpeechSynthesizer())
