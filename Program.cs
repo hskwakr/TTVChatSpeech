@@ -77,22 +77,10 @@ namespace TwitchChatSpeech
 
             //Console.WriteLine(speechEnglishWord(chat));
             //Console.WriteLine(speechJapaneseWord(chat));
-            string subtractedChat = chat;
-            while (subtractedChat != String.Empty)
+
+            if (!speechWord(chat))
             {
-                // first time
-                if(subtractedChat == chat)
-                {
-                    subtractedChat = speechJapaneseWord(subtractedChat);
-                    if (subtractedChat == chat)
-                    {
-                        subtractedChat = speechEnglishWord(subtractedChat);
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
+                Console.WriteLine("Speech failed.");
             }
 
             //if (e.ChatMessage.Message.Contains("badword"))
@@ -113,7 +101,7 @@ namespace TwitchChatSpeech
             //    client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!");
         }
 
-        private void Speech(string culture, string chat)
+        private void speech(string culture, string chat)
         {
             // Initialize a new instance of the SpeechSynthesizer.
             using (SpeechSynthesizer synth = new SpeechSynthesizer())
@@ -132,8 +120,53 @@ namespace TwitchChatSpeech
                 builder.AppendText(chat);
 
                 // Speak the prompt.
-                //synth.Speak(builder);
+                synth.Speak(builder);
             }
+        }
+
+        private bool speechWord(string text)
+        {
+            string cultureEnglish = "en-US";
+            string cultureJapanese = "ja-JP";
+            string replacement = "$1";
+
+            string patternJapanese = $@"一-龯ぁ-んァ-ン";
+            string patternEnglishWord = $@"^([A-Za-z]+)[\s{patternJapanese}].*";
+            string patternJapaneseWord = $@"^([{patternJapanese}]+).*";
+
+            RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Multiline;
+
+            string subtractedChat = text;
+            Match match;
+            while (subtractedChat != String.Empty)
+            {
+                match = Regex.Match(text, patternEnglishWord, options);
+                // English word
+                if (match.Success)
+                {
+                    subtractedChat = text.Substring(match.Result(replacement).Length);
+                    //Console.WriteLine(match.Result(replacement));
+                    speech(cultureEnglish, match.Result(replacement));
+                }
+                else
+                {
+                    match = Regex.Match(text, patternJapaneseWord, options);
+
+                    // Japanese word
+                    if (match.Success)
+                    {
+                        subtractedChat = text.Substring(match.Result(replacement).Length);
+                        //Console.WriteLine(match.Result(replacement));
+                        speech(cultureJapanese, match.Result(replacement));
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         private string speechEnglishWord(string text)
@@ -160,7 +193,6 @@ namespace TwitchChatSpeech
 
         private string speechJapaneseWord(string text)
         {
-            string caltureJapanese = "ja-JP";
             string replacement = "$1";
             string patternJapanese = $@"一-龯ぁ-んァ-ン";
 
