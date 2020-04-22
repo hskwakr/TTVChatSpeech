@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 using TwitchLib.Client;
 using TwitchLib.Client.Enums;
@@ -72,26 +73,26 @@ namespace TwitchChatSpeech
             string chat = ChatTool.Replace(e.ChatMessage.Message);
             //ChatTool.urlfinder(e.ChatMessage.Message);
             //ChatTool.detectLanguage(chat);
-            ChatTool.foo(chat);
+            //ChatTool.RegexPatternTest(chat);
 
-            // Initialize a new instance of the SpeechSynthesizer.
-            using (SpeechSynthesizer synth = new SpeechSynthesizer())
+            //Console.WriteLine(speechEnglishWord(chat));
+            //Console.WriteLine(speechJapaneseWord(chat));
+            string subtractedChat = chat;
+            while (subtractedChat != String.Empty)
             {
-                // Configure the audio output. 
-                synth.SetOutputToDefaultAudioDevice();
-
-                // Set the volume of the TTS voice, and the combined output volume.
-                synth.TtsVolume = 20;
-                synth.Volume = 20;
-
-                // Build a prompt containing recorded audio and synthesized speech.
-                PromptBuilder builder = new PromptBuilder(
-                  new System.Globalization.CultureInfo("ja-JP"));
-                //builder.AppendAudio("C:\\Test\\WelcomeToContosoRadio.wav");
-                builder.AppendText(chat);
-
-                // Speak the prompt.
-                //synth.Speak(builder);
+                // first time
+                if(subtractedChat == chat)
+                {
+                    subtractedChat = speechJapaneseWord(subtractedChat);
+                    if (subtractedChat == chat)
+                    {
+                        subtractedChat = speechEnglishWord(subtractedChat);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
             }
 
             //if (e.ChatMessage.Message.Contains("badword"))
@@ -110,6 +111,74 @@ namespace TwitchChatSpeech
             //    client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points! So kind of you to use your Twitch Prime on this channel!");
             //else
             //    client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!");
+        }
+
+        private void Speech(string culture, string chat)
+        {
+            // Initialize a new instance of the SpeechSynthesizer.
+            using (SpeechSynthesizer synth = new SpeechSynthesizer())
+            {
+                // Configure the audio output. 
+                synth.SetOutputToDefaultAudioDevice();
+
+                // Set the volume of the TTS voice, and the combined output volume.
+                synth.TtsVolume = 20;
+                synth.Volume = 20;
+
+                // Build a prompt containing recorded audio and synthesized speech.
+                PromptBuilder builder = new PromptBuilder(
+                  new System.Globalization.CultureInfo(culture));
+                //builder.AppendAudio("C:\\Test\\WelcomeToContosoRadio.wav");
+                builder.AppendText(chat);
+
+                // Speak the prompt.
+                //synth.Speak(builder);
+            }
+        }
+
+        private string speechEnglishWord(string text)
+        {
+            string caltureEnglish = "en-US";
+            string replacement = "$1";
+            string patternJapanese = $@"一-龯ぁ-んァ-ン";
+
+            string pattern = $@"^([A-Za-z]+)[\s{patternJapanese}].*";
+
+            RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Multiline;
+
+            Match match = Regex.Match(text, pattern, options);
+
+            if (match.Success)
+            {
+                // To advance
+                text = text.Substring(match.Result(replacement).Length);
+                //Console.WriteLine(match.Result(replacement));
+            }
+
+            return text;
+        }
+
+        private string speechJapaneseWord(string text)
+        {
+            string caltureJapanese = "ja-JP";
+            string replacement = "$1";
+            string patternJapanese = $@"一-龯ぁ-んァ-ン";
+
+            List<string> matches = new List<string>();
+            string pattern = $@"^([{patternJapanese}]+).*";
+
+            RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Multiline;
+
+            Match match = Regex.Match(text, pattern, options);
+
+            if (match.Success)
+            {
+                // To advance
+                text = text.Substring(match.Result(replacement).Length);
+                //Console.WriteLine(match.Result(replacement));
+            }
+
+            return text;
         }
     }
 }
