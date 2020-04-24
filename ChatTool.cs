@@ -14,7 +14,7 @@ namespace TwitchChatSpeech
         public static string Replace(string chat)
         {
             Dictionary<string, string> replaceList = new Dictionary<string, string>();
-            replaceList.Add("([8]{4,})", " pach pach ");
+            replaceList.Add("([8]{4,})", "ぱちぱち");
             replaceList.Add(@"(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?", "url");
 
             RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Multiline;
@@ -44,37 +44,6 @@ namespace TwitchChatSpeech
                 Console.WriteLine("[{0}] = {1}", re.GetGroupNames()[gIdx], m.Groups[gIdx].Value);
             }
         }
-
-        //public static bool detectLanguage(string chat)
-        //{
-        //    bool isEnglish;
-        //    string country = "en";
-        //    LanguageDetector detector = new LanguageDetector();
-
-        //    //splitEnglishAndJapanese
-        //    //string JapanesePattern = @"(\J+)";
-        //    //string EnglishPattern = @"([a-zA-Z]+)";
-
-        //    List<string> matchEnglish = new List<string>();
-        //    List<string> matchJapanese = new List<string>();
-
-        //    //matchEnglish = matchingEnglishWords(chat);
-        //    //matchJapanese = matchingJapaneseWords(chat);
-
-        //    //detector.AddAllLanguages();
-        //    detector.AddLanguages("ja", "en");
-        //    Console.WriteLine(detector.Detect(chat));
-        //    if (country == detector.Detect(chat))
-        //    {
-        //        isEnglish = true;
-        //    } 
-        //    else
-        //    {
-        //        isEnglish = false;
-        //    }
-
-        //    return isEnglish;
-        //}
 
         public static void RegexPatternTest(string text)
         {
