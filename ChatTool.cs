@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 using Microsoft.Speech.Synthesis;
 using Microsoft.Speech.AudioFormat;
 
 using LanguageDetection;
+using System.IO;
 
 namespace TwitchChatSpeech
 {
@@ -13,21 +16,29 @@ namespace TwitchChatSpeech
     {
         public static string Replace(string chat)
         {
-            Dictionary<string, string> replaceList = new Dictionary<string, string>();
-            replaceList.Add("([8]{4,})", "ぱちぱち");
-            replaceList.Add(@"(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?", "url");
+            Word[] words = new Word[]
+            {
+                new Word{ 
+                    Pattern = @"([8]{4,})", 
+                    Replace = "ぱちぱち" 
+                },
+                new Word{ 
+                    Pattern = @"(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?", 
+                    Replace = "url" 
+                }
+            };
 
             RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Multiline;
 
-            foreach (KeyValuePair<string, string> kvp in replaceList)
+            foreach (var word in words)
             {
-                Match match = Regex.Match(chat, kvp.Key, options);
+                Match match = Regex.Match(chat, word.Pattern, options);
 
                 //Console.WriteLine(match.Success.ToString());
                 if (match.Success)
                 {
                     // replace
-                    chat = chat.Replace(match.Value, kvp.Value);
+                    chat = chat.Replace(match.Value, word.Replace);
                     //Console.WriteLine(chat);
                 }
             }
@@ -35,7 +46,38 @@ namespace TwitchChatSpeech
             return chat;
         }
 
-        public static void urlfinder(string chat)
+        private static void WriteFile(string fileName, Word[] words)
+        {
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+
+            using (FileStream fs = File.Create(fileName))
+            {
+                JsonSerializer.SerializeAsync(fs, words, options).Wait();
+            }
+        }
+
+        private static Word[] ReadFile(string fileName)
+        {
+            Word[] words;
+
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true
+            };
+
+            using (FileStream fs = File.OpenRead(fileName))
+            {
+                words = JsonSerializer.DeserializeAsync<Word[]>(fs).Result;
+            }
+
+            return words;
+        }
+
+
+        public static void Urlfinder(string chat)
         {
             Regex re = new Regex(@"(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?", RegexOptions.IgnoreCase | RegexOptions.Multiline);
             Match m = re.Match(chat);

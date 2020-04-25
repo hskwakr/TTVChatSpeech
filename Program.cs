@@ -71,10 +71,10 @@ namespace TwitchChatSpeech
         private void Client_OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
             string chat = ChatTool.Replace(e.ChatMessage.Message);
-            //ChatTool.urlfinder(e.ChatMessage.Message);
+            //ChatTool.Urlfinder(e.ChatMessage.Message);
             //ChatTool.RegexPatternTest(chat);
 
-            if (!speechWord(chat))
+            if (!SpeechWord(chat))
             {
                 Console.WriteLine("Speech failed.");
             }
@@ -97,7 +97,7 @@ namespace TwitchChatSpeech
             //    client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!");
         }
 
-        private void speech(string culture, string chat)
+        private void Speech(string culture, string chat)
         {
             // Initialize a new instance of the SpeechSynthesizer.
             using (SpeechSynthesizer synth = new SpeechSynthesizer())
@@ -120,7 +120,7 @@ namespace TwitchChatSpeech
             }
         }
 
-        private bool speechWord(string text)
+        private bool SpeechWord(string text)
         {
             string cultureEnglish = "en-US";
             string cultureJapanese = "ja-JP";
@@ -142,7 +142,7 @@ namespace TwitchChatSpeech
                 {
                     subtractedChat = subtractedChat.Substring(match.Result(replacement).Length);
                     //Console.WriteLine(match.Result(replacement));
-                    speech(cultureEnglish, match.Result(replacement));
+                    Speech(cultureEnglish, match.Result(replacement));
                 }
                 else
                 {
@@ -153,7 +153,7 @@ namespace TwitchChatSpeech
                     {
                         subtractedChat = subtractedChat.Substring(match.Result(replacement).Length);
                         //Console.WriteLine(match.Result(replacement));
-                        speech(cultureJapanese, match.Result(replacement));
+                        Speech(cultureJapanese, match.Result(replacement));
                     }
                     else
                     {
