@@ -1,36 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 using Microsoft.Speech.Synthesis;
 using Microsoft.Speech.AudioFormat;
 
-using LanguageDetection;
-using System.IO;
 
 namespace TwitchChatSpeech
 {
-    static class ChatTool
+    static class ChatUtility
     {
+        public static string DetectCommand(string chat)
+        {
+            string cmd = "add";
+            return cmd;
+        }
+
+        public static Word TryExtractAddCommand(string chat)
+        {
+            Word word = new Word(@"([8]{4,})", "ぱちぱち");
+            return word;
+        }
+
         public static string Replace(string chat)
         {
-            Word[] words = new Word[]
-            {
-                new Word{ 
-                    Pattern = @"([8]{4,})", 
-                    Replace = "ぱちぱち" 
-                },
-                new Word{ 
-                    Pattern = @"(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?", 
-                    Replace = "url" 
-                }
-            };
+            //Word[] words = new Word[]
+            //{
+            //    new Word{ 
+            //        Pattern = @"([8]{4,})", 
+            //        Replace = "ぱちぱち" 
+            //    },
+            //    new Word{ 
+            //        Pattern = @"(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?", 
+            //        Replace = "url" 
+            //    }
+            //};
 
             RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Multiline;
 
-            foreach (var word in words)
+            foreach (var word in Words.Read())
             {
                 Match match = Regex.Match(chat, word.Pattern, options);
 
@@ -46,35 +54,13 @@ namespace TwitchChatSpeech
             return chat;
         }
 
-        private static void WriteFile(string fileName, Word[] words)
+        public static void Addreplace(string pattern, string replace)
         {
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
-
-            using (FileStream fs = File.Create(fileName))
-            {
-                JsonSerializer.SerializeAsync(fs, words, options).Wait();
-            }
+            Words.Add(pattern, replace);
         }
 
-        private static Word[] ReadFile(string fileName)
-        {
-            Word[] words;
-
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
-
-            using (FileStream fs = File.OpenRead(fileName))
-            {
-                words = JsonSerializer.DeserializeAsync<Word[]>(fs).Result;
-            }
-
-            return words;
-        }
+        // write part in new function
+        
 
 
         public static void Urlfinder(string chat)

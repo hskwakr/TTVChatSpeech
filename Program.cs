@@ -70,9 +70,21 @@ namespace TwitchChatSpeech
 
         private void Client_OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
-            string chat = ChatTool.Replace(e.ChatMessage.Message);
-            //ChatTool.Urlfinder(e.ChatMessage.Message);
-            //ChatTool.RegexPatternTest(chat);
+            string chat = ChatUtility.Replace(e.ChatMessage.Message);
+            //ChatUtility.Urlfinder(e.ChatMessage.Message);
+            //ChatUtility.RegexPatternTest(chat);
+
+            var cmd = ChatUtility.DetectCommand(chat);
+            switch (cmd)
+            {
+                case "add":
+                    var commandArgs = ChatUtility.TryExtractAddCommand(chat);
+                    ChatUtility.Addreplace(commandArgs.Pattern, commandArgs.Replace);
+
+                    break;
+                default:
+                    break;
+            }
 
             if (!SpeechWord(chat))
             {
