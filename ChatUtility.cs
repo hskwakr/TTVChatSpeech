@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 using Microsoft.Speech.Synthesis;
 using Microsoft.Speech.AudioFormat;
-
+using System.Linq;
 
 namespace TwitchChatSpeech
 {
@@ -24,6 +24,8 @@ namespace TwitchChatSpeech
 
         public static string Replace(string chat)
         {
+            Word[] words = Words.Read().ToArray();
+
             //Word[] words = new Word[]
             //{
             //    new Word{ 
@@ -58,10 +60,6 @@ namespace TwitchChatSpeech
         {
             Words.Add(pattern, replace);
         }
-
-        // write part in new function
-        
-
 
         public static void Urlfinder(string chat)
         {

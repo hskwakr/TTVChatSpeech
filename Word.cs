@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using System.IO;
+using TwitchLib.Api.Core.Extensions.System;
 
 namespace TwitchChatSpeech
 {
@@ -19,6 +19,19 @@ namespace TwitchChatSpeech
         {
             Pattern = pattern;
             Replace = replace;
+        }
+    }
+
+    class WordEqualityComparer : IEqualityComparer<Word>
+    {
+        public bool Equals(Word x, Word y)
+        {
+            return x.Pattern.Equals(y.Pattern);
+        }
+
+        public int GetHashCode(Word obj)
+        {
+            return obj.Pattern.GetHashCode();
         }
     }
 
@@ -40,39 +53,47 @@ namespace TwitchChatSpeech
             WriteFile(file, words);
         }
 
-        private static void WriteFile(string fileName, Word[] words)
+        private static void WriteFile(string fileName, params Word[] words)
         {
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
+            Word[] original;
 
-            using (FileStream fs = File.Create(fileName))
+            if (!File.Exists(fileName))
             {
-                JsonSerializer.SerializeAsync(fs, words, options).Wait();
+                original = new Word[] { };
             }
+            else
+            {
+                original = ReadFile(fileName);
+            }
+
+            IList<Word> unique = new List<Word>();
+            foreach (var x in words)
+            {
+                foreach (var y in original)
+                {
+                    if (x.Pattern == y.Pattern)
+                    {
+                        unique.Add(new Word(x.Pattern, x.Replace));
+                    }
+                    else
+                    {
+                        unique.Add(new Word(y.Pattern, y.Replace));
+                    }
+                }
+            }
+
+            File.WriteAllText(fileName, JsonConvert.SerializeObject(unique.ToArray()));
         }
 
         private static Word[] ReadFile(string fileName)
         {
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
-
             if (!File.Exists(fileName))
             {
-                // Create the file.
                 return new Word[] { };
             }
 
-            Word[] words = new Word[]{ };
-            using (FileStream fs = File.OpenRead(fileName))
-            {
-                words = JsonSerializer.DeserializeAsync<Word[]>(fs).Result;
-            }
-
-            return words;
+            string json = File.ReadAllText(fileName);
+            return JsonConvert.DeserializeObject<Word[]>(json);
         }
     }
 }
