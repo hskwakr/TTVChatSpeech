@@ -71,13 +71,16 @@ namespace TwitchChatSpeech
             {
                 foreach (var y in original)
                 {
-                    if (x.Pattern == y.Pattern)
+                    if (String.Compare(x.Pattern, y.Pattern) == 0)
                     {
-                        unique.Add(new Word(x.Pattern, x.Replace));
+                        if (String.Compare(x.Replace, y.Replace) == 0)
+                        {
+                            unique.Add(new Word(y.Pattern, y.Replace));
+                        }
                     }
                     else
                     {
-                        unique.Add(new Word(y.Pattern, y.Replace));
+                        unique.Add(new Word(x.Pattern, x.Replace));
                     }
                 }
             }

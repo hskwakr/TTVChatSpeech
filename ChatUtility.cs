@@ -12,13 +12,27 @@ namespace TwitchChatSpeech
     {
         public static string DetectCommand(string chat)
         {
-            string cmd = "add";
+            string cmd = "!!add";
             return cmd;
         }
 
         public static Word TryExtractAddCommand(string chat)
         {
-            Word word = new Word(@"([8]{4,})", "ぱちぱち");
+            //Word word = new Word(@"([8]{4,})", "ぱちぱち");
+
+            string identifier = "!!add";
+
+            // Split arguments with a space
+            string[] commandArgs = chat.Split(null);
+
+            if ((String.Compare(commandArgs[0], identifier) != 0) || (commandArgs.Length != 3))
+            {
+                return null;
+            }
+
+            // Convert to Word object
+            Word word = new Word(commandArgs[1], commandArgs[2]);
+
             return word;
         }
 
