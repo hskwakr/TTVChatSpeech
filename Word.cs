@@ -65,11 +65,21 @@ namespace TwitchChatSpeech
             {
                 original = ReadFile(fileName);
             }
-
+        
             IList<Word> unique = new List<Word>();
-            foreach (var x in words)
+
+            // If the File have nothing
+            if (original.Length == 0)
             {
-                foreach (var y in original)
+                foreach (var y in words)
+                {
+                    unique.Add(new Word(y.Pattern, y.Replace));
+                }
+            }
+
+            foreach (var x in original)
+            {
+                foreach (var y in words)
                 {
                     if (String.Compare(x.Pattern, y.Pattern) == 0)
                     {
@@ -81,6 +91,7 @@ namespace TwitchChatSpeech
                     else
                     {
                         unique.Add(new Word(x.Pattern, x.Replace));
+                        unique.Add(new Word(y.Pattern, y.Replace));
                     }
                 }
             }
