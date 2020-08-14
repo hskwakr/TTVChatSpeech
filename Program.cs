@@ -77,10 +77,16 @@ namespace TwitchChatSpeech
             var cmd = ChatUtility.DetectCommand(chat);
             switch (cmd)
             {
-                case "!!add":
-                    var commandArgs = ChatUtility.TryExtractAddCommand(chat);
-                    if (commandArgs == null) break;
-                    ChatUtility.Addreplace(commandArgs.Pattern, commandArgs.Replace);
+                case "commands":
+                    var commands = ChatUtility.TryExtractCommandsCommand(chat);
+                    if (commands == false) break;
+                    else ChatUtility.ShowCommands(client, e.ChatMessage.Channel);
+
+                    break;
+                case "add":
+                    var add = ChatUtility.TryExtractAddCommand(chat);
+                    if (add == null) break;
+                    else ChatUtility.Addreplace(add.Pattern, add.Replace);
 
                     break;
                 default:
