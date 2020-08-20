@@ -161,9 +161,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChatCommad.cs" />
     <Compile Include="ChatUtility.cs" />
+    <Compile Include="MicrosoftSpeech.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TwitchBot.cs" />
     <Compile Include="Word.cs" />
   </ItemGroup>
   <ItemGroup>
