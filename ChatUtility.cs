@@ -4,38 +4,15 @@ using System.Text.RegularExpressions;
 
 using Microsoft.Speech.Synthesis;
 using Microsoft.Speech.AudioFormat;
-
-using LanguageDetection;
+using System.Linq;
 
 namespace TwitchChatSpeech
 {
-    static class ChatTool
+    static class ChatUtility
     {
-        public static string Replace(string chat)
-        {
-            Dictionary<string, string> replaceList = new Dictionary<string, string>();
-            replaceList.Add("([8]{4,})", "ぱちぱち");
-            replaceList.Add(@"(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?", "url");
+        
 
-            RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Multiline;
-
-            foreach (KeyValuePair<string, string> kvp in replaceList)
-            {
-                Match match = Regex.Match(chat, kvp.Key, options);
-
-                //Console.WriteLine(match.Success.ToString());
-                if (match.Success)
-                {
-                    // replace
-                    chat = chat.Replace(match.Value, kvp.Value);
-                    //Console.WriteLine(chat);
-                }
-            }
-
-            return chat;
-        }
-
-        public static void urlfinder(string chat)
+        public static void Urlfinder(string chat)
         {
             Regex re = new Regex(@"(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?", RegexOptions.IgnoreCase | RegexOptions.Multiline);
             Match m = re.Match(chat);
