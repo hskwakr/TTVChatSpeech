@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using System.Text.RegularExpressions;
 using Microsoft.Speech.Synthesis;
 
 namespace TwitchChatSpeech
 {
-    static class MicrosoftSpeech
+    class MicrosoftSpeech : Speech
     {
-        private static void Speech(string culture, string chat)
+        protected override void DoSpeech(string culture, string chat)
         {
             // Initialize a new instance of the SpeechSynthesizer.
             using (SpeechSynthesizer synth = new SpeechSynthesizer())
@@ -34,50 +33,6 @@ namespace TwitchChatSpeech
             }
         }
 
-        // Try to speech Japanese and Englsih.
-        public static bool SpeechWord(string text)
-        {
-            string cultureEnglish = "en-US";
-            string cultureJapanese = "ja-JP";
-            string replacement = "$1";
-
-            string patternJapanese = $@"一-龯ぁ-んァ-ン";
-            string patternEnglishWord = $@"^([\s]+|[^{patternJapanese}]+).*";
-            string patternJapaneseWord = $@"^([\s{patternJapanese}]+).*";
-
-            RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Multiline;
-
-            string subtractedChat = text;
-            Match match;
-            while (subtractedChat != String.Empty)
-            {
-                match = Regex.Match(subtractedChat, patternEnglishWord, options);
-                // English word
-                if (match.Success)
-                {
-                    subtractedChat = subtractedChat.Substring(match.Result(replacement).Length);
-                    //Console.WriteLine(match.Result(replacement));
-                    Speech(cultureEnglish, match.Result(replacement));
-                }
-                else
-                {
-                    match = Regex.Match(subtractedChat, patternJapaneseWord, options);
-
-                    // Japanese word
-                    if (match.Success)
-                    {
-                        subtractedChat = subtractedChat.Substring(match.Result(replacement).Length);
-                        //Console.WriteLine(match.Result(replacement));
-                        Speech(cultureJapanese, match.Result(replacement));
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }
+        
     }
 }

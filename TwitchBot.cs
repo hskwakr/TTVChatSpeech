@@ -83,7 +83,9 @@ namespace TwitchChatSpeech
                     break;
             }
 
-            if (!MicrosoftSpeech.SpeechWord(chat))
+            //ISpeech speech = new MicrosoftSpeech();
+            ISpeech speech = new GoogleSpeech();
+            if (!speech.SpeechWord(chat))
             {
                 Console.WriteLine("Speech failed.");
             }
