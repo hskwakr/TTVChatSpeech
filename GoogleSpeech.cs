@@ -13,7 +13,7 @@ namespace TwitchChatSpeech
     {
         private static TextToSpeechClient client = TextToSpeechClient.Create();
         private static string mediaFile = "AudioFileForGoogleSpeech.mp3";
-
+        
         protected override void DoSpeech(string culture, string chat)
         {
             // The input to be synthesized, can be provided as text or SSML.
@@ -38,40 +38,24 @@ namespace TwitchChatSpeech
             // Perform the text-to-speech request.
             var response = client.SynthesizeSpeech(input, voiceSelection, audioConfig);
 
+            if (File.Exists(mediaFile))
+            {
+                File.Delete(mediaFile);
+            }
+
             // Write the response to the output file.
             using (var output = File.Create(mediaFile))
             {
                 response.AudioContent.WriteTo(output);
+                //output.Close();
             }
 
-            PlayMP3(mediaFile);
+            Mp3Player player = new Mp3Player(mediaFile);
+            player.Repeat = false;
+            player.Play();
+
+            File.Delete(mediaFile);
             //Console.WriteLine("Audio content written to file \"output.mp3\"");
         }
-
-        private void PlayMP3(string url)
-        {
-            WMPLib.WindowsMediaPlayer player = new WMPLib.WindowsMediaPlayer();
-            
-            //player.PlayStateChange +=
-            //    new WMPLib._WMPOCXEvents_PlayStateChangeEventHandler(Player_PlayStateChange);
-            //player.MediaError +=
-            //    new WMPLib._WMPOCXEvents_MediaErrorEventHandler(Player_MediaError);
-
-            player.URL = url;
-            player.settings.volume = 10;
-            player.controls.play();
-        }
-
-        //private void Player_PlayStateChange(int newState)
-        //{
-        //    if ((WMPLib.WMPPlayState)newState == WMPLib.WMPPlayState.wmppsStopped)
-        //    {
-        //    }
-        //}
-
-        //private void Player_MediaError(object pMediaObject)
-        //{
-        //    Console.WriteLine("Cannot play media file.");
-        //}
     }
 }

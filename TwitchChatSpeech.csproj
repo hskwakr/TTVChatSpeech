@@ -210,6 +210,7 @@
     <Compile Include="GoogleSpeech.cs" />
     <Compile Include="ISpeech.cs" />
     <Compile Include="MicrosoftSpeech.cs" />
+    <Compile Include="Mp3Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Speech.cs" />
@@ -220,6 +221,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="WMPLib">
