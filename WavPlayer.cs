@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 using NAudio.Wave;
 using System.Threading;
@@ -29,10 +28,10 @@ namespace TwitchChatSpeech
                 
                 outputDevice.Volume = 0.1F;
                 outputDevice.Play();
-                //while (outputDevice.PlaybackState == PlaybackState.Playing)
-                //{
-                //    Thread.Sleep(1000);
-                //}
+                while (outputDevice.PlaybackState == PlaybackState.Playing)
+                {
+                    Thread.Sleep(1000);
+                }
             }
         }
     }
