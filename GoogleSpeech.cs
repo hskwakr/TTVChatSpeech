@@ -12,6 +12,7 @@ namespace TwitchChatSpeech
     {
         private static TextToSpeechClient _client = TextToSpeechClient.Create();
         private static string _mediaFile = "AudioFileForGoogleSpeech.wav";
+        private object _lock = new object();
         
         protected override void DoSpeech(string culture, string chat)
         {
@@ -37,22 +38,25 @@ namespace TwitchChatSpeech
             // Perform the text-to-speech request.
             var response = _client.SynthesizeSpeech(input, voiceSelection, audioConfig);
 
-            if (File.Exists(_mediaFile))
+            lock (_lock)
             {
-                File.Delete(_mediaFile);
+                if (File.Exists(_mediaFile))
+                {
+                    File.Delete(_mediaFile);
+                }
+
+                // Write the response to the output file.
+                using (var output = File.Create(_mediaFile))
+                {
+                    response.AudioContent.WriteTo(output);
+                    //output.Close();
+                }
+
+                WavPlayer player = new WavPlayer(_mediaFile);
+                player.Play();
+
+                //Console.WriteLine("Audio content written to file \"output.mp3\"");
             }
-
-            // Write the response to the output file.
-            using (var output = File.Create(_mediaFile))
-            {
-                response.AudioContent.WriteTo(output);
-                //output.Close();
-            }
-
-            WavPlayer player = new WavPlayer(_mediaFile);
-            player.Play();
-
-            //Console.WriteLine("Audio content written to file \"output.mp3\"");
         }
     }
 }

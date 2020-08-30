@@ -13,6 +13,7 @@ namespace TwitchChatSpeech
     class WavPlayer
     {
         private string _mediaFile = "";
+        private object _lock = new object();
 
         public WavPlayer(string fileName)
         {
@@ -21,16 +22,20 @@ namespace TwitchChatSpeech
 
         public void Play()
         {
-            using (var audioFile = new AudioFileReader(_mediaFile))
-            using (var outputDevice = new WaveOutEvent())
+            lock (_lock)
             {
-                outputDevice.Init(audioFile);
-                
-                outputDevice.Volume = 0.1F;
-                outputDevice.Play();
-                while (outputDevice.PlaybackState == PlaybackState.Playing)
+                using (var audioFile = new AudioFileReader(_mediaFile))
+                using (var outputDevice = new WaveOutEvent())
                 {
-                    Thread.Sleep(1000);
+                    outputDevice.Init(audioFile);
+
+                    outputDevice.Volume = 0.05F;
+                    outputDevice.Play();
+
+                    while (outputDevice.PlaybackState == PlaybackState.Playing)
+                    {
+                        Thread.Sleep(1000);
+                    }
                 }
             }
         }
