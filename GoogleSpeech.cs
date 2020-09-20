@@ -56,6 +56,9 @@ namespace TwitchChatSpeech
                 player.Play();
 
                 //Console.WriteLine("Audio content written to file \"output.mp3\"");
+
+                player.Dispose();
+                player = null;
             }
         }
     }

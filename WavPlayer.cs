@@ -15,29 +15,45 @@ namespace TwitchChatSpeech
         private string _mediaFile = "";
         private object _lock = new object();
 
+        private WaveOutEvent _outputDevice;
+        private AudioFileReader _audioFile;
+
         public WavPlayer(string fileName)
         {
             _mediaFile = fileName;
+            _outputDevice = new WaveOutEvent();
+            _outputDevice.PlaybackStopped += OnPlaybackStopped;
+            
+            lock (_lock)
+            {
+                _audioFile = new AudioFileReader(_mediaFile);
+                _outputDevice.Init(_audioFile);
+            }
+
+            _outputDevice.Volume = 0.05F;
         }
 
         public void Play()
         {
+            _outputDevice?.Play();
+        }
+
+        public void Dispose()
+        {
+            _outputDevice?.Dispose();
+            _outputDevice = null;
+
             lock (_lock)
             {
-                using (var audioFile = new AudioFileReader(_mediaFile))
-                using (var outputDevice = new WaveOutEvent())
-                {
-                    outputDevice.Init(audioFile);
-
-                    outputDevice.Volume = 0.05F;
-                    outputDevice.Play();
-
-                    while (outputDevice.PlaybackState == PlaybackState.Playing)
-                    {
-                        Thread.Sleep(1000);
-                    }
-                }
+                _audioFile?.Dispose();
+                _audioFile = null;
             }
+        }
+
+        private void OnPlaybackStopped(object sender, StoppedEventArgs e)
+        {
+            _outputDevice?.Stop();
+            Dispose();
         }
     }
 }
