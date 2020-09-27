@@ -223,9 +223,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Speech.cs" />
     <Compile Include="WavPlayer.cs" />
-    <Compile Include="WordReplacement.cs" />
     <Compile Include="TwitchBot.cs" />
-    <Compile Include="Word.cs" />
+    <Compile Include="ReplacementWord.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
