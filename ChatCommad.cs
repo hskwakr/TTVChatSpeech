@@ -46,7 +46,7 @@ namespace TwitchChatSpeech
             return true;
         }
 
-        public static Word TryExtractAddCommand(string chat)
+        public static ReplacementWord TryExtractAddCommand(string chat)
         {
             string identifier = "!!add";
 
@@ -59,7 +59,7 @@ namespace TwitchChatSpeech
             }
 
             // Convert to Word object
-            Word word = new Word(commandArgs[1], commandArgs[2]);
+            ReplacementWord word = new ReplacementWord(commandArgs[1], commandArgs[2]);
 
             return word;
         }

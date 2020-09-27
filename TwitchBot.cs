@@ -59,7 +59,7 @@ namespace TwitchChatSpeech
 
         private void Client_OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
-            string chat = WordReplacement.Replace(e.ChatMessage.Message);
+            string chat = ReplacementWordsController.Replace(e.ChatMessage.Message);
             //ChatUtility.Urlfinder(e.ChatMessage.Message);
             //ChatUtility.RegexPatternTest(chat);
 
@@ -75,7 +75,7 @@ namespace TwitchChatSpeech
                 case "add":
                     var add = ChatCommad.TryExtractAddCommand(chat);
                     if (add == null) break;
-                    else WordReplacement.AddReplace(add.Pattern, add.Replace);
+                    else ReplacementWordsController.AddReplace(add.Pattern, add.Replace);
 
                     break;
                 default:
