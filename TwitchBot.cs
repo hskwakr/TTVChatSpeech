@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 using TwitchLib.Client;
 using TwitchLib.Client.Enums;
@@ -17,7 +16,7 @@ namespace TwitchChatSpeech
 {
     class TwitchBot
     {
-        TwitchClient client;
+        TwitchClient _client;
 
         public TwitchBot()
         {
@@ -29,17 +28,17 @@ namespace TwitchChatSpeech
                 ThrottlingPeriod = TimeSpan.FromSeconds(30)
             };
             WebSocketClient customClient = new WebSocketClient(clientOptions);
-            client = new TwitchClient(customClient);
-            client.Initialize(credentials, "hskwakr");
+            _client = new TwitchClient(customClient);
+            _client.Initialize(credentials, "hskwakr");
 
-            client.OnLog += Client_OnLog;
-            client.OnJoinedChannel += Client_OnJoinedChannel;
-            client.OnMessageReceived += Client_OnMessageReceived;
-            client.OnWhisperReceived += Client_OnWhisperReceived;
-            client.OnNewSubscriber += Client_OnNewSubscriber;
-            client.OnConnected += Client_OnConnected;
+            _client.OnLog += Client_OnLog;
+            _client.OnJoinedChannel += Client_OnJoinedChannel;
+            _client.OnMessageReceived += Client_OnMessageReceived;
+            _client.OnWhisperReceived += Client_OnWhisperReceived;
+            _client.OnNewSubscriber += Client_OnNewSubscriber;
+            _client.OnConnected += Client_OnConnected;
 
-            client.Connect();
+            _client.Connect();
         }
 
         private void Client_OnLog(object sender, OnLogArgs e)
@@ -60,7 +59,7 @@ namespace TwitchChatSpeech
 
         private void Client_OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
-            string chat = WordReplacement.Replace(e.ChatMessage.Message);
+            string chat = ReplacementWordsController.Replace(e.ChatMessage.Message);
             //ChatUtility.Urlfinder(e.ChatMessage.Message);
             //ChatUtility.RegexPatternTest(chat);
 
@@ -70,20 +69,22 @@ namespace TwitchChatSpeech
                 case "commands":
                     var commands = ChatCommad.TryExtractCommandsCommand(chat);
                     if (commands == false) break;
-                    else ChatCommad.ShowCommands(client, e.ChatMessage.Channel);
+                    else ChatCommad.ShowCommands(_client, e.ChatMessage.Channel);
 
                     break;
                 case "add":
                     var add = ChatCommad.TryExtractAddCommand(chat);
                     if (add == null) break;
-                    else WordReplacement.AddReplace(add.Pattern, add.Replace);
+                    else ReplacementWordsController.AddReplace(add.Pattern, add.Replace);
 
                     break;
                 default:
                     break;
             }
 
-            if (!MicrosoftSpeech.SpeechWord(chat))
+            //ISpeech speech = new MicrosoftSpeech();
+            ISpeech speech = new GoogleSpeech();
+            if (!speech.SpeechWord(chat))
             {
                 Console.WriteLine("Speech failed.");
             }
