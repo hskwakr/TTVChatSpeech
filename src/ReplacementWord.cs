@@ -7,10 +7,11 @@ using Newtonsoft.Json;
 using System.IO;
 using TwitchLib.Api.Core.Extensions.System;
 using System.Text.RegularExpressions;
+using System.Runtime.Serialization;
 
 namespace TwitchChatSpeech
 {
-    class ReplacementWord
+    class ReplacementWord : IComparable<ReplacementWord>
     {
         public string Pattern { get; set; }
         public string Replace { get; set; }
@@ -20,81 +21,34 @@ namespace TwitchChatSpeech
             Pattern = pattern;
             Replace = replace;
         }
+
+        public int CompareTo(ReplacementWord other)
+        {
+            if (String.Compare(this.Pattern, other.Pattern) == 0)
+            {
+                return 0;
+            }
+
+            return 1;
+        }
     }
 
-    static class ReplacementWordsFile
+    class ReplacementWordsFile : JsonFileIO
     {
-        static string file = "replace.json";
+        private static string file = "replace.json";
 
-        public static IEnumerable<ReplacementWord> Read()
+        public static IList<ReplacementWord> Read()
         {
-            return ReadFile(file);
+            return ReadFile<ReplacementWord>(file);
         }
 
         public static void Add(string pattern, string replace)
         {
-            ReplacementWord[] words = new ReplacementWord[]
+            IList<ReplacementWord> words = new List<ReplacementWord>()
             {
                 new ReplacementWord(pattern, replace)
             };
-            WriteFile(file, words);
-        }
-
-        private static void WriteFile(string fileName, params ReplacementWord[] words)
-        {
-            ReplacementWord[] original;
-
-            if (!File.Exists(fileName))
-            {
-                original = new ReplacementWord[] { };
-            }
-            else
-            {
-                original = ReadFile(fileName);
-            }
-        
-            IList<ReplacementWord> unique = new List<ReplacementWord>();
-
-            // If the File have nothing
-            if (original.Length == 0)
-            {
-                foreach (var y in words)
-                {
-                    unique.Add(new ReplacementWord(y.Pattern, y.Replace));
-                }
-            }
-
-            foreach (var x in original)
-            {
-                foreach (var y in words)
-                {
-                    if (String.Compare(x.Pattern, y.Pattern) == 0)
-                    {
-                        if (String.Compare(x.Replace, y.Replace) == 0)
-                        {
-                            unique.Add(new ReplacementWord(y.Pattern, y.Replace));
-                        }
-                    }
-                    else
-                    {
-                        unique.Add(new ReplacementWord(x.Pattern, x.Replace));
-                        unique.Add(new ReplacementWord(y.Pattern, y.Replace));
-                    }
-                }
-            }
-
-            File.WriteAllText(fileName, JsonConvert.SerializeObject(unique.ToArray()));
-        }
-
-        private static ReplacementWord[] ReadFile(string fileName)
-        {
-            if (!File.Exists(fileName))
-            {
-                return new ReplacementWord[] { };
-            }
-
-            string json = File.ReadAllText(fileName);
-            return JsonConvert.DeserializeObject<ReplacementWord[]>(json);
+            WriteFile<ReplacementWord>(file, words);
         }
     }
 
