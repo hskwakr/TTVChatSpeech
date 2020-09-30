@@ -11,7 +11,7 @@ namespace TwitchChatSpeech
     class GoogleSpeech : Speech
     {
         private static TextToSpeechClient client = TextToSpeechClient.Create();
-        private static string mediaFile = "AudioFileForGoogleSpeech.wav";
+        private static string mediaFilePath = "AudioFileForGoogleSpeech.wav";
         private object mediaFileLock = new object();
         
         protected override void DoSpeech(string culture, string chat)
@@ -40,19 +40,19 @@ namespace TwitchChatSpeech
 
             lock (mediaFileLock)
             {
-                if (File.Exists(mediaFile))
+                if (File.Exists(mediaFilePath))
                 {
-                    File.Delete(mediaFile);
+                    File.Delete(mediaFilePath);
                 }
 
                 // Write the response to the output file.
-                using (var output = File.Create(mediaFile))
+                using (var output = File.Create(mediaFilePath))
                 {
                     response.AudioContent.WriteTo(output);
                     //output.Close();
                 }
 
-                WavPlayer player = new WavPlayer(mediaFile);
+                WavPlayer player = new WavPlayer(mediaFilePath);
                 player.Play();
 
                 //Console.WriteLine("Audio content written to file \"output.mp3\"");

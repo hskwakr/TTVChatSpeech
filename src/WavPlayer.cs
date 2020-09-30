@@ -12,38 +12,38 @@ namespace TwitchChatSpeech
 {
     class WavPlayer
     {
-        private string mediaFile = "";
+        private string mediaFilePath = "";
         private object mediaFileLock = new object();
 
-        private WaveOutEvent _outputDevice;
-        private AudioFileReader _audioFile;
+        private WaveOutEvent outputDevice;
+        private AudioFileReader audioFile;
 
         public WavPlayer(string fileName)
         {
-            mediaFile = fileName;
+            mediaFilePath = fileName;
         }
 
         public void Play()
         {
-            if (_outputDevice == null)
+            if (outputDevice == null)
             {
-                _outputDevice = new WaveOutEvent();
-                _outputDevice.PlaybackStopped += OnPlaybackStopped;
+                outputDevice = new WaveOutEvent();
+                outputDevice.PlaybackStopped += OnPlaybackStopped;
             }
 
-            if (_audioFile == null)
+            if (audioFile == null)
             {
                 lock (mediaFileLock)
                 {
-                    _audioFile = new AudioFileReader(mediaFile);
-                    _outputDevice.Init(_audioFile);
+                    audioFile = new AudioFileReader(mediaFilePath);
+                    outputDevice.Init(audioFile);
                 }
             }
 
-            _outputDevice.Volume = 0.05F;
-            _outputDevice.Play();
+            outputDevice.Volume = 0.05F;
+            outputDevice.Play();
 
-            while (_outputDevice?.PlaybackState == PlaybackState.Playing)
+            while (outputDevice?.PlaybackState == PlaybackState.Playing)
             {
                 Thread.Sleep(1000);
             }
@@ -51,24 +51,24 @@ namespace TwitchChatSpeech
 
         public void Dispose()
         {
-            if (_outputDevice?.PlaybackState == PlaybackState.Playing)
+            if (outputDevice?.PlaybackState == PlaybackState.Playing)
             {
-                _outputDevice.Stop();
+                outputDevice.Stop();
             }
 
-            _outputDevice?.Dispose();
-            _outputDevice = null;
+            outputDevice?.Dispose();
+            outputDevice = null;
 
             lock (mediaFileLock)
             {
-                _audioFile?.Dispose();
-                _audioFile = null;
+                audioFile?.Dispose();
+                audioFile = null;
             }
         }
 
         private void OnPlaybackStopped(object sender, StoppedEventArgs e)
         {
-            _outputDevice?.Stop();
+            outputDevice?.Stop();
             Dispose();
         }
     }
