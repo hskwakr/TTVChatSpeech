@@ -9,8 +9,7 @@ namespace TwitchChatSpeech
 {
     abstract class Speech : ISpeech
     {
-        protected virtual void DoSpeech(string culture, string chat)
-        { }
+        protected abstract void DoSpeech(string culture, string chat);
 
         // Try to speech Japanese and Englsih.
         public bool SpeechWord(string text)

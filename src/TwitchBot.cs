@@ -15,7 +15,7 @@ namespace TwitchChatSpeech
 {
     class TwitchBot
     {
-        TwitchClient _client;
+        private TwitchClient client;
 
         public TwitchBot()
         {
@@ -27,17 +27,17 @@ namespace TwitchChatSpeech
                 ThrottlingPeriod = TimeSpan.FromSeconds(30)
             };
             WebSocketClient customClient = new WebSocketClient(clientOptions);
-            _client = new TwitchClient(customClient);
-            _client.Initialize(credentials, "hskwakr");
+            client = new TwitchClient(customClient);
+            client.Initialize(credentials, "hskwakr");
 
-            _client.OnLog += Client_OnLog;
-            _client.OnJoinedChannel += Client_OnJoinedChannel;
-            _client.OnMessageReceived += Client_OnMessageReceived;
-            _client.OnWhisperReceived += Client_OnWhisperReceived;
-            _client.OnNewSubscriber += Client_OnNewSubscriber;
-            _client.OnConnected += Client_OnConnected;
+            client.OnLog += Client_OnLog;
+            client.OnJoinedChannel += Client_OnJoinedChannel;
+            client.OnMessageReceived += Client_OnMessageReceived;
+            client.OnWhisperReceived += Client_OnWhisperReceived;
+            client.OnNewSubscriber += Client_OnNewSubscriber;
+            client.OnConnected += Client_OnConnected;
 
-            _client.Connect();
+            client.Connect();
         }
 
         private void Client_OnLog(object sender, OnLogArgs e)
@@ -68,7 +68,7 @@ namespace TwitchChatSpeech
                 case "commands":
                     var commands = ChatCommad.TryExtractCommandsCommand(chat);
                     if (commands == false) break;
-                    else ChatCommad.ShowCommands(_client, e.ChatMessage.Channel);
+                    else ChatCommad.ShowCommands(client, e.ChatMessage.Channel);
 
                     break;
                 case "add":

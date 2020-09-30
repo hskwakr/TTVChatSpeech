@@ -213,7 +213,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="JsonFileIO.cs" />
+    <Compile Include="src\JsonFileIO.cs" />
     <Compile Include="src\ChatCommad.cs" />
     <Compile Include="src\ChatUtility.cs" />
     <Compile Include="src\GoogleSpeech.cs" />

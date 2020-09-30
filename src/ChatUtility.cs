@@ -10,8 +10,6 @@ namespace TwitchChatSpeech
 {
     static class ChatUtility
     {
-        
-
         public static void Urlfinder(string chat)
         {
             Regex re = new Regex(@"(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?", RegexOptions.IgnoreCase | RegexOptions.Multiline);
