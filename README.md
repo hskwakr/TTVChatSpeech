@@ -6,6 +6,7 @@ wmp.dll
 
 Also, you need to get the Nuget packages to run.
 ```
+System.IO
 Newtonsoft.Json
 TwitchLib
 Google.Cloud.TextToSpeech.V1
