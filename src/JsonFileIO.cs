@@ -91,7 +91,19 @@ namespace TwitchChatSpeech
                 unique.Add(z);
             }
 
-            File.WriteAllText(fileName, JsonConvert.SerializeObject(unique.ToArray()));
+            try
+            {
+                var jsonSettings = new JsonSerializerSettings()
+                {
+                    Formatting = Formatting.Indented
+                };
+
+                File.WriteAllText(fileName, JsonConvert.SerializeObject(unique.ToArray(), jsonSettings));
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
 
         protected static IList<T> ReadFile<T>(string fileName)
@@ -101,8 +113,17 @@ namespace TwitchChatSpeech
                 return new List<T>();
             }
 
-            string json = File.ReadAllText(fileName);
-            return JsonConvert.DeserializeObject<IList<T>>(json);
+            try
+            {
+                string json = File.ReadAllText(fileName);
+                var list = JsonConvert.DeserializeObject<IList<T>>(json);
+
+                return list;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
