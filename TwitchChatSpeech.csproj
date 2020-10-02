@@ -204,7 +204,7 @@
     <Compile Include="src\ChatCommad.cs" />
     <Compile Include="src\ChatUtility.cs" />
     <Compile Include="src\GoogleSpeech.cs" />
-    <Compile Include="src\IgnoreUser.cs" />
+    <Compile Include="src\IgnoreUserInfo.cs" />
     <Compile Include="src\ISpeech.cs" />
     <Compile Include="src\MicrosoftSpeech.cs" />
     <Compile Include="src\NativeMethods.cs" />

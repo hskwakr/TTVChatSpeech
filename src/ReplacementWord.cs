@@ -33,28 +33,30 @@ namespace TwitchChatSpeech
         }
     }
 
-    class ReplacementWordsFile : JsonFileIO
+    class ReplacementFile : JsonFileIO
     {
-        private static string file = "replace.json";
+        private static string filePath = "replace.json";
 
-        public static IList<ReplacementWord> Read()
+        public IList<ReplacementWord> Read()
         {
-            return ReadFile<ReplacementWord>(file);
+            return ReadFile<ReplacementWord>(filePath);
         }
 
-        public static void Add(string pattern, string replace)
+        public void Add(string pattern, string replace)
         {
             IList<ReplacementWord> words = new List<ReplacementWord>()
             {
                 new ReplacementWord(pattern, replace)
             };
-            WriteFile<ReplacementWord>(file, words);
+            WriteFile<ReplacementWord>(filePath, words);
         }
     }
 
-    static class ReplacementWordsController
+    class Replacement
     {
-        public static string Replace(string chat)
+        private ReplacementFile words = new ReplacementFile();
+
+        public string Replace(string chat)
         {
             //Word[] words = new Word[]
             //{
@@ -70,7 +72,7 @@ namespace TwitchChatSpeech
 
             RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Multiline;
 
-            foreach (var word in ReplacementWordsFile.Read())
+            foreach (var word in words.Read())
             {
                 Match match = Regex.Match(chat, word.Pattern, options);
 
@@ -86,9 +88,14 @@ namespace TwitchChatSpeech
             return chat;
         }
 
-        public static void AddReplace(string pattern, string replace)
+        public void Add(string pattern, string replace)
         {
-            ReplacementWordsFile.Add(pattern, replace);
+            words.Add(pattern, replace);
+        }
+
+        public void Add(ReplacementWord word)
+        {
+            words.Add(word.Pattern, word.Replace);
         }
     }
 }

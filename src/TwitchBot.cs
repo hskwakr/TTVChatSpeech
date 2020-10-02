@@ -16,6 +16,9 @@ namespace TwitchChatSpeech
     class TwitchBot
     {
         private TwitchClient client;
+        private Replacement replacement = new Replacement();
+        //private ISpeech speech = new MicrosoftSpeech();
+        private ISpeech speech = new GoogleSpeech();
 
         public TwitchBot()
         {
@@ -58,7 +61,7 @@ namespace TwitchChatSpeech
 
         private void Client_OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
-            string chat = ReplacementWordsController.Replace(e.ChatMessage.Message);
+            string chat = replacement.Replace(e.ChatMessage.Message);
             //ChatUtility.Urlfinder(e.ChatMessage.Message);
             //ChatUtility.RegexPatternTest(chat);
 
@@ -74,15 +77,13 @@ namespace TwitchChatSpeech
                 case "add":
                     var add = ChatCommad.TryExtractAddCommand(chat);
                     if (add == null) break;
-                    else ReplacementWordsController.AddReplace(add.Pattern, add.Replace);
+                    else replacement.Add(add.Pattern, add.Replace);
 
                     break;
                 default:
                     break;
             }
 
-            //ISpeech speech = new MicrosoftSpeech();
-            ISpeech speech = new GoogleSpeech();
             if (!speech.SpeechWord(chat))
             {
                 Console.WriteLine("Speech failed.");
@@ -105,7 +106,5 @@ namespace TwitchChatSpeech
             //else
             //    client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!");
         }
-
-
     }
 }
