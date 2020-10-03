@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
-
 using Microsoft.Speech.Synthesis;
 using Microsoft.Speech.AudioFormat;
-using System.Linq;
 
 namespace TwitchChatSpeech
 {
