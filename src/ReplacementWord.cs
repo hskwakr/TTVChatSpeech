@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.IO;
-using TwitchLib.Api.Core.Extensions.System;
 using System.Text.RegularExpressions;
-using System.Runtime.Serialization;
 
 namespace TwitchChatSpeech
 {
