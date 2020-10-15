@@ -13,7 +13,6 @@ namespace TwitchChatSpeech
     {
         private TwitchClient client;
         private Replacement replacement = new Replacement();
-        //private ISpeech speech = new MicrosoftSpeech();
         private ISpeech speech = new GoogleSpeech();
 
         public TwitchBot()
