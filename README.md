@@ -14,7 +14,9 @@ new ConnectionCredentials("your Twitch ID", Environment.GetEnvironmentVariable("
 ## Credits and Other Project Licenses
 - Newtonsoft.Json  
 https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md
+
 - TwitchLib  
 https://github.com/TwitchLib/TwitchLib/blob/master/LICENSE
-- Google.Cloud.TextToSpeech.V1
+
+- Google.Cloud.TextToSpeech.V1  
 https://github.com/googleapis/google-cloud-dotnet/blob/master/LICENSE
