@@ -7,7 +7,7 @@ using TwitchLib.Client.Models;
 using TwitchLib.Communication.Clients;
 using TwitchLib.Communication.Models;
 
-namespace TwitchChatSpeech
+namespace TTVChatSpeech
 {
     class TwitchBot
     {

@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Google.Cloud.TextToSpeech.V1;
 
-namespace TwitchChatSpeech
+namespace TTVChatSpeech
 {
     class GoogleSpeech : Speech
     {

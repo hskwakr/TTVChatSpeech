@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TwitchChatSpeech.src
+namespace TTVChatSpeech.src
 {
     class IgnoreUserInfo : IComparable<IgnoreUserInfo>
     {

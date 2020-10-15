@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace TwitchChatSpeech
+namespace TTVChatSpeech
 {
     abstract class Speech : ISpeech
     {

@@ -1,7 +1,7 @@
 ﻿using NAudio.Wave;
 using System.Threading;
 
-namespace TwitchChatSpeech
+namespace TTVChatSpeech
 {
     class WavPlayer
     {

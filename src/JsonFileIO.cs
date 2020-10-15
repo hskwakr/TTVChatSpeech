@@ -4,7 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using System.IO;
 
-namespace TwitchChatSpeech
+namespace TTVChatSpeech
 {
     abstract class JsonFileIO
     {

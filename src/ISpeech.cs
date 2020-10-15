@@ -1,5 +1,5 @@
 ﻿
-namespace TwitchChatSpeech
+namespace TTVChatSpeech
 {
     interface ISpeech
     {

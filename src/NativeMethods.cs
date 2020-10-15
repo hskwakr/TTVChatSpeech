@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace TwitchChatSpeech
+namespace TTVChatSpeech
 {
     internal static class NativeMethods
     {

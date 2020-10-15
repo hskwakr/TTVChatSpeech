@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using TwitchLib.Client;
 
-namespace TwitchChatSpeech
+namespace TTVChatSpeech
 {
     static class ChatCommad
     {

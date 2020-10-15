@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchChatSpeech
+namespace TTVChatSpeech
 {
     class Program
     {
