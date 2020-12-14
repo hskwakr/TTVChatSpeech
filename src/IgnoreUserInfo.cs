@@ -25,11 +25,11 @@ namespace TTVChatSpeech.src
 
     class IgnoreUserFile : JsonFileIO
     {
-        private static string filePath = "ignoreUser.json";
+        private static string _filePath = "ignoreUser.json";
 
         public IList<IgnoreUserInfo> Read()
         {
-            return ReadFile<IgnoreUserInfo>(filePath);
+            return ReadFile<IgnoreUserInfo>(_filePath);
         }
 
         public void Add(string name)
@@ -38,7 +38,7 @@ namespace TTVChatSpeech.src
             {
                 new IgnoreUserInfo(name)
             };
-            WriteFile<IgnoreUserInfo>(filePath, users);
+            WriteFile<IgnoreUserInfo>(_filePath, users);
         }
     }
 
