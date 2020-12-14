@@ -5,9 +5,9 @@ namespace TTVChatSpeech
 {
     class GoogleSpeech : Speech
     {
-        private static TextToSpeechClient client = TextToSpeechClient.Create();
-        private static string mediaFilePath = "AudioFileForGoogleSpeech.wav";
-        private object mediaFileLock = new object();
+        private static TextToSpeechClient _client = TextToSpeechClient.Create();
+        private static string _mediaFilePath = "AudioFileForGoogleSpeech.wav";
+        private object _mediaFileLock = new object();
         
         protected override void DoSpeech(string culture, string chat)
         {
@@ -31,23 +31,23 @@ namespace TTVChatSpeech
             };
 
             // Perform the text-to-speech request.
-            var response = client.SynthesizeSpeech(input, voiceSelection, audioConfig);
+            var response = _client.SynthesizeSpeech(input, voiceSelection, audioConfig);
 
-            lock (mediaFileLock)
+            lock (_mediaFileLock)
             {
-                if (File.Exists(mediaFilePath))
+                if (File.Exists(_mediaFilePath))
                 {
-                    File.Delete(mediaFilePath);
+                    File.Delete(_mediaFilePath);
                 }
 
                 // Write the response to the output file.
-                using (var output = File.Create(mediaFilePath))
+                using (var output = File.Create(_mediaFilePath))
                 {
                     response.AudioContent.WriteTo(output);
                     //output.Close();
                 }
 
-                WavPlayer player = new WavPlayer(mediaFilePath);
+                WavPlayer player = new WavPlayer(_mediaFilePath);
                 player.Play();
 
                 //Console.WriteLine("Audio content written to file \"output.mp3\"");

@@ -202,7 +202,6 @@
     <Compile Include="src\GoogleSpeech.cs" />
     <Compile Include="src\IgnoreUserInfo.cs" />
     <Compile Include="src\ISpeech.cs" />
-    <Compile Include="src\NativeMethods.cs" />
     <Compile Include="src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\Speech.cs" />

@@ -28,11 +28,11 @@ namespace TTVChatSpeech
 
     class ReplacementFile : JsonFileIO
     {
-        private static string filePath = "replace.json";
+        private static string _filePath = "replace.json";
 
         public IList<ReplacementWord> Read()
         {
-            return ReadFile<ReplacementWord>(filePath);
+            return ReadFile<ReplacementWord>(_filePath);
         }
 
         public void Add(string pattern, string replace)
@@ -41,13 +41,13 @@ namespace TTVChatSpeech
             {
                 new ReplacementWord(pattern, replace)
             };
-            WriteFile<ReplacementWord>(filePath, words);
+            WriteFile<ReplacementWord>(_filePath, words);
         }
     }
 
     class Replacement
     {
-        private ReplacementFile words = new ReplacementFile();
+        private ReplacementFile _words = new ReplacementFile();
 
         public string Replace(string chat)
         {
@@ -65,7 +65,7 @@ namespace TTVChatSpeech
 
             RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Multiline;
 
-            foreach (var word in words.Read())
+            foreach (var word in _words.Read())
             {
                 Match match = Regex.Match(chat, word.Pattern, options);
 
@@ -83,12 +83,12 @@ namespace TTVChatSpeech
 
         public void Add(string pattern, string replace)
         {
-            words.Add(pattern, replace);
+            _words.Add(pattern, replace);
         }
 
         public void Add(ReplacementWord word)
         {
-            words.Add(word.Pattern, word.Replace);
+            _words.Add(word.Pattern, word.Replace);
         }
     }
 }
