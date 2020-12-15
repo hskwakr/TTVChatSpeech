@@ -1,8 +1,8 @@
 ﻿using TwitchLib.Client.Interfaces;
 
-namespace TTVChatSpeech.TwitchChatManage
+namespace TTVChatSpeech.TwitchChat
 {
-    public class TwitchChatClientConnection : ITwitchChatClientConnection
+    public class TwitchChatConnection : ITwitchChatConnection
     {
         public void Connect(ITwitchClient client)
         {

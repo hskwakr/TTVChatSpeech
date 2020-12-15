@@ -1,9 +1,9 @@
 ﻿using TwitchLib.Client.Events;
 using TwitchLib.Client.Interfaces;
 
-namespace TTVChatSpeech.TwitchChatManage
+namespace TTVChatSpeech.TwitchChat
 {
-    public class TwitchChatClientEventsSubscriber : ITwitchChatClientEventsSubscriber
+    public class TwitchChatEventsSubscriber : ITwitchChatEventsSubscriber
     {
         public void Subscribe(ITwitchClient client)
         {

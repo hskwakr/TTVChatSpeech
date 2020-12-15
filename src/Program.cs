@@ -1,5 +1,5 @@
 ﻿using System;
-using TTVChatSpeech.TwitchChatManage;
+using TTVChatSpeech.TwitchChat;
 
 namespace TTVChatSpeech
 {

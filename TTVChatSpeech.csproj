@@ -208,13 +208,13 @@
     <Compile Include="src\WavPlayer.cs" />
     <Compile Include="src\TwitchBot.cs" />
     <Compile Include="src\ReplacementWord.cs" />
-    <Compile Include="TwitchChatManage\ITwitchChatClientConnection.cs" />
-    <Compile Include="TwitchChatManage\ITwitchChatClientEventsSubscriber.cs" />
-    <Compile Include="TwitchChatManage\ITwitchChatClientInitializer.cs" />
-    <Compile Include="TwitchChatManage\TwitchChatClientConnection.cs" />
-    <Compile Include="TwitchChatManage\TwitchChatClientEventsSubscriber.cs" />
-    <Compile Include="TwitchChatManage\TwitchChatClientInitializer.cs" />
-    <Compile Include="TwitchChatManage\TwitchChatManager.cs" />
+    <Compile Include="TwitchChat\ITwitchChatConnection.cs" />
+    <Compile Include="TwitchChat\ITwitchChatEventsSubscriber.cs" />
+    <Compile Include="TwitchChat\ITwitchChatInitializer.cs" />
+    <Compile Include="TwitchChat\TwitchChatConnection.cs" />
+    <Compile Include="TwitchChat\TwitchChatEventsSubscriber.cs" />
+    <Compile Include="TwitchChat\TwitchChatInitializer.cs" />
+    <Compile Include="TwitchChat\TwitchChatManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

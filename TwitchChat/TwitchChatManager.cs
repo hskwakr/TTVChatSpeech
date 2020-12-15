@@ -1,21 +1,21 @@
 ﻿using TwitchLib.Client;
 using TwitchLib.Client.Interfaces;
 
-namespace TTVChatSpeech.TwitchChatManage
+namespace TTVChatSpeech.TwitchChat
 {
     public class TwitchChatManager
     {
         private ITwitchClient _client;
-        private ITwitchChatClientInitializer _initializer;
-        private ITwitchChatClientEventsSubscriber _subscriber;
-        private ITwitchChatClientConnection _clientConnection;
+        private ITwitchChatInitializer _initializer;
+        private ITwitchChatEventsSubscriber _subscriber;
+        private ITwitchChatConnection _clientConnection;
 
         public TwitchChatManager()
         {
             _client = new TwitchClient();
-            _initializer = new TwitchChatClientInitializer();
-            _clientConnection = new TwitchChatClientConnection();
-            _subscriber = new TwitchChatClientEventsSubscriber();
+            _initializer = new TwitchChatInitializer();
+            _clientConnection = new TwitchChatConnection();
+            _subscriber = new TwitchChatEventsSubscriber();
         }
 
         public void ConnectToTwitch()
