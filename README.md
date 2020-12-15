@@ -1,4 +1,6 @@
-﻿## Dependencies
+﻿# This repo is Legacy. I recommend https://github.com/hskwakr/TTVChatSpeech
+ 
+ ## Dependencies
 - Newtonsoft.Json
 - Google.Cloud.TextToSpeech.V1
 - TwitchLib
