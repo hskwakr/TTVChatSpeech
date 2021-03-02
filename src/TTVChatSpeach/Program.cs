@@ -1,5 +1,4 @@
 ﻿using System;
-using TTVChatSpeech.TwitchChat;
 
 namespace TTVChatSpeech
 {
@@ -8,8 +7,7 @@ namespace TTVChatSpeech
         static void Main(string[] args)
         {
             //TwitchBot bot = new TwitchBot();
-            TwitchChatManager manager = new TwitchChatManager();
-            manager.ConnectToTwitch();
+            TwitchBot bot = new TwitchBot();
 
             Console.ReadLine();
         }
