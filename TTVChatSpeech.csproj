@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9E8759BC-C180-4EC3-BC7A-730C76455DDB}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>TwitchChatSpeech</RootNamespace>
-    <AssemblyName>TwitchChatSpeech</AssemblyName>
+    <RootNamespace>TTVChatSpeech</RootNamespace>
+    <AssemblyName>TTVChatSpeech</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -208,6 +208,13 @@
     <Compile Include="src\WavPlayer.cs" />
     <Compile Include="src\TwitchBot.cs" />
     <Compile Include="src\ReplacementWord.cs" />
+    <Compile Include="TwitchChat\ITwitchChatConnection.cs" />
+    <Compile Include="TwitchChat\ITwitchChatEventsSubscriber.cs" />
+    <Compile Include="TwitchChat\ITwitchChatInitializer.cs" />
+    <Compile Include="TwitchChat\TwitchChatConnection.cs" />
+    <Compile Include="TwitchChat\TwitchChatEventsSubscriber.cs" />
+    <Compile Include="TwitchChat\TwitchChatInitializer.cs" />
+    <Compile Include="TwitchChat\TwitchChatManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
