@@ -1,12 +1,8 @@
-﻿# This repo is Legacy. I recommend https://github.com/hskwakr/TTVChatSpeech
- 
- ## Dependencies
-- Newtonsoft.Json
+﻿## Dependencies
 - Google.Cloud.TextToSpeech.V1
 - TwitchLib
-- System.IO
 
-Also, you need to change the code in `TwitchBot.cs` to set your twitch token.  
+Also, you need to change the code in `TwitchChat/TwitchChatInitializer.cs` to set your twitch token.  
 Here is about token generator: https://twitchtokengenerator.com/  
 (If you can set environment variable "TwitchToken", you can use below code.)
 ```
@@ -14,9 +10,6 @@ new ConnectionCredentials("your Twitch ID", Environment.GetEnvironmentVariable("
 ```
 
 ## Credits and Other Project Licenses
-- Newtonsoft.Json  
-https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md
-
 - TwitchLib  
 https://github.com/TwitchLib/TwitchLib/blob/master/LICENSE
 
