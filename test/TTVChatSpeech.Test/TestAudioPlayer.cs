@@ -3,10 +3,8 @@ using TTVChatSpeech.Audio;
 
 namespace TTVChatSpeech.Test
 {
-
     public class TestAudioPlayer
     {
-        private readonly string fileName = "test.wav";
 
         [Fact]
         public void CanPlayAudioFile()
