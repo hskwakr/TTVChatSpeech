@@ -1,4 +1,4 @@
-﻿namespace TTVChatSpeech.Test
+﻿namespace TTVChatSpeech.Audio
 {
     public interface IAudioPlayer
     {
