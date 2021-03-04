@@ -47,13 +47,13 @@ namespace TTVChatSpeech
                     //output.Close();
                 }
 
-                WavPlayer player = new WavPlayer(_mediaFilePath);
-                player.Play();
+                //WavPlayer player = new WavPlayer(_mediaFilePath);
+                //player.Play();
 
-                //Console.WriteLine("Audio content written to file \"output.mp3\"");
+                ////Console.WriteLine("Audio content written to file \"output.mp3\"");
 
-                player.Dispose();
-                player = null;
+                //player.Dispose();
+                //player = null;
             }
         }
     }
