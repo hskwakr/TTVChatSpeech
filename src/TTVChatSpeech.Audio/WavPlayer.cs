@@ -1,9 +1,10 @@
 ﻿using NAudio.Wave;
+using System;
 using System.Threading;
 
-namespace TTVChatSpeech
+namespace TTVChatSpeech.Audio
 {
-    public class WavPlayer
+    public class WavPlayer : IAudioPlayer
     {
         private string _mediaFilePath = "";
         private object _mediaFileLock = new object();
@@ -16,8 +17,13 @@ namespace TTVChatSpeech
             _mediaFilePath = fileName;
         }
 
-        public void Play()
+        public bool Play()
         {
+            if (String.IsNullOrEmpty(_mediaFilePath))
+            {
+                return false;
+            }
+
             if (_outputDevice == null)
             {
                 _outputDevice = new WaveOutEvent();
@@ -40,9 +46,11 @@ namespace TTVChatSpeech
             {
                 Thread.Sleep(1000);
             }
+
+            return true;
         }
 
-        public void Dispose()
+        public bool Dispose()
         {
             if (_outputDevice?.PlaybackState == PlaybackState.Playing)
             {
@@ -57,6 +65,8 @@ namespace TTVChatSpeech
                 _audioFile?.Dispose();
                 _audioFile = null;
             }
+
+            return true;
         }
 
         private void OnPlaybackStopped(object sender, StoppedEventArgs e)
