@@ -4,14 +4,23 @@ namespace TTVChatSpeech.Test
 {
     public class AudioPlayerMock : IAudioPlayer
     {
+        private readonly bool _disposable;
+        private readonly bool _playable;
+
+        public AudioPlayerMock(bool playable, bool disposable)
+        {
+            _disposable = disposable;
+            _playable = playable;
+        }
+
         public bool Play()
         {
-            return true;
+            return _playable;
         }
 
         public bool Dispose()
         {
-            return true;
+            return _disposable;
         }
     }
 
@@ -22,9 +31,13 @@ namespace TTVChatSpeech.Test
         [Fact]
         public void CanPlayAudioFile()
         {
-            AudioPlayer player = new AudioPlayer(fileName, new AudioPlayerMock());
+            AudioPlayer player1 = new AudioPlayer(fileName, new AudioPlayerMock(true, true));
+            AudioPlayer player2 = new AudioPlayer(fileName, new AudioPlayerMock(false, true));
+            AudioPlayer player3 = new AudioPlayer(fileName, new AudioPlayerMock(true, false));
 
-            Assert.True(player.Play());
+            Assert.True(player1.Play());
+            Assert.False(player2.Play());
+            Assert.False(player3.Play());
         }
     }
 
@@ -47,10 +60,7 @@ namespace TTVChatSpeech.Test
 
         public bool Play()
         {
-            _audioPlayer.Play();
-            _audioPlayer.Dispose();
-
-            return true;
+            return _audioPlayer.Play() && _audioPlayer.Dispose();
         }
     }
 }
