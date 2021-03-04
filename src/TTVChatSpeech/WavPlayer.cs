@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace TTVChatSpeech
 {
-    class WavPlayer
+    public class WavPlayer
     {
         private string _mediaFilePath = "";
         private object _mediaFileLock = new object();
